@@ -2731,33 +2731,33 @@ resizeclient(Client *c, int x, int y, int w, int h)
 	#endif // EXRESIZE_PATCH
 	wc.border_width = c->bw;
 	#if NOBORDER_PATCH
-	if (((nexttiled(c->mon->clients) == c && !nexttiled(c->next))
-		#if MONOCLE_LAYOUT
-		|| &monocle == c->mon->lt[c->mon->sellt]->arrange
-		#endif // MONOCLE_LAYOUT
-		#if DECK_LAYOUT
-		|| (&deck == c->mon->lt[c->mon->sellt]->arrange &&
-			c->mon->nmaster == 0)
-		#endif // DECK_LAYOUT
-		#if FLEXTILE_DELUXE_LAYOUT
-		|| (&flextile == c->mon->lt[c->mon->sellt]->arrange && (
-			(c->mon->ltaxis[LAYOUT] == NO_SPLIT &&
-			 c->mon->ltaxis[MASTER] == MONOCLE) ||
-			(c->mon->ltaxis[STACK] == MONOCLE &&
-			 c->mon->nmaster == 0)))
-		#endif //FLEXTILE_DELUXE_LAYOUT
-		)
-		#if FAKEFULLSCREEN_CLIENT_PATCH
-		&& (c->fakefullscreen == 1 || !c->isfullscreen)
-		#else
-		&& !c->isfullscreen
-		#endif // FAKEFULLSCREEN_CLIENT_PATCH
-		&& !c->isfloating
-		&& c->mon->lt[c->mon->sellt]->arrange) {
+    #if MONOCLE_LAYOUT
+	/* if (((nexttiled(c->mon->clients) == c && !nexttiled(c->next)) */
+    if (&monocle == c->mon->lt[c->mon->sellt]->arrange) {
+		/* #if DECK_LAYOUT */
+		/* || (&deck == c->mon->lt[c->mon->sellt]->arrange && */
+		/* 	c->mon->nmaster == 0) */
+		/* #endif // DECK_LAYOUT */
+		/* #if FLEXTILE_DELUXE_LAYOUT */
+		/* || (&flextile == c->mon->lt[c->mon->sellt]->arrange && ( */
+		/* 	(c->mon->ltaxis[LAYOUT] == NO_SPLIT && */
+		/* 	 c->mon->ltaxis[MASTER] == MONOCLE) || */
+		/* 	(c->mon->ltaxis[STACK] == MONOCLE && */
+		/* 	 c->mon->nmaster == 0))) */
+		/* #endif //FLEXTILE_DELUXE_LAYOUT */
+		/* ) */
+		/* #if FAKEFULLSCREEN_CLIENT_PATCH */
+		/* && (c->fakefullscreen == 1 || !c->isfullscreen) */
+		/* #else */
+		/* && !c->isfullscreen */
+		/* #endif // FAKEFULLSCREEN_CLIENT_PATCH */
+		/* && !c->isfloating */
+		/* && c->mon->lt[c->mon->sellt]->arrange) { */
 		wc.width += c->bw * 2;
 		wc.height += c->bw * 2;
 		wc.border_width = 0;
 	}
+    #endif // MONOCLE_LAYOUT
 	#endif // NOBORDER_PATCH
 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
 	configure(c);
@@ -2950,23 +2950,23 @@ restack(Monitor *m)
 	}
 	XSync(dpy, False);
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
-	#if WARP_PATCH && FLEXTILE_DELUXE_LAYOUT || WARP_PATCH && MONOCLE_LAYOUT
-	#if FLEXTILE_DELUXE_LAYOUT
-	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-	#endif // FLEXTILE_DELUXE_LAYOUT
-	if (m == selmon && (m->tagset[m->seltags] & m->sel->tags) && (
-		#if MONOCLE_LAYOUT && FLEXTILE_DELUXE_LAYOUT
-		(m->lt[m->sellt]->arrange != &monocle
-		&& !(m->ltaxis[MASTER] == MONOCLE && (abs(m->ltaxis[LAYOUT] == NO_SPLIT || !m->nmaster || n <= m->nmaster))))
-		#elif MONOCLE_LAYOUT
-		m->lt[m->sellt]->arrange != &monocle
-		#else
-		!(m->ltaxis[MASTER] == MONOCLE && (abs(m->ltaxis[LAYOUT] == NO_SPLIT || !m->nmaster || n <= m->nmaster)))
-		#endif // FLEXTILE_DELUXE_LAYOUT
-		|| m->sel->isfloating)
-	)
-		warp(m->sel);
-	#endif // WARP_PATCH
+	/* #if WARP_PATCH && FLEXTILE_DELUXE_LAYOUT || WARP_PATCH && MONOCLE_LAYOUT */
+	/* #if FLEXTILE_DELUXE_LAYOUT */
+	/* for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++); */
+	/* #endif // FLEXTILE_DELUXE_LAYOUT */
+	/* if (m == selmon && (m->tagset[m->seltags] & m->sel->tags) && ( */
+	/* 	#if MONOCLE_LAYOUT && FLEXTILE_DELUXE_LAYOUT */
+	/* 	(m->lt[m->sellt]->arrange != &monocle */
+	/* 	&& !(m->ltaxis[MASTER] == MONOCLE && (abs(m->ltaxis[LAYOUT] == NO_SPLIT || !m->nmaster || n <= m->nmaster)))) */
+	/* 	#elif MONOCLE_LAYOUT */
+	/* 	m->lt[m->sellt]->arrange != &monocle */
+	/* 	#else */
+	/* 	!(m->ltaxis[MASTER] == MONOCLE && (abs(m->ltaxis[LAYOUT] == NO_SPLIT || !m->nmaster || n <= m->nmaster))) */
+	/* 	#endif // FLEXTILE_DELUXE_LAYOUT */
+	/* 	|| m->sel->isfloating) */
+	/* ) */
+	/* 	warp(m->sel); */
+	/* #endif // WARP_PATCH */
 }
 
 #if IPC_PATCH
